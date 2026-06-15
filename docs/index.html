@@ -37,6 +37,7 @@
 <meta name="twitter:image" content="https://expertsmeta.pro/og-image.png" />
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="favicon.ico" sizes="32x32" type="image/x-icon" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#111113" media="(prefers-color-scheme: dark)" />
@@ -186,6 +187,16 @@
   .btn-primary:hover{opacity:.85}
   .btn-link{color:var(--ink);font-size:16px;text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px}
   .btn-link:hover{opacity:.6}
+  .hero-note{font-size:14px;color:var(--gray);margin-top:18px}
+
+  /* phone in nav */
+  .nav-phone{font-size:14px;font-weight:600;letter-spacing:-.01em;color:var(--ink);text-decoration:none;white-space:nowrap;transition:opacity .2s}
+  .nav-phone:hover{opacity:.6}
+
+  /* floating call button (mobile) */
+  .float-call{display:none;position:fixed;right:18px;bottom:18px;z-index:60;align-items:center;gap:8px;
+    background:var(--ink);color:#fff;text-decoration:none;padding:14px 22px;border-radius:980px;
+    font-size:15px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.18)}
 
   /* MINI STATS (внутри Обо мне) */
   .mini-stats{display:flex;flex-wrap:wrap;gap:38px;margin-bottom:44px}
@@ -268,6 +279,8 @@
     .wrap{padding:0 24px}
     .hero{padding:44px 24px 48px}
     .burger{display:flex}
+    .nav-phone{display:none}
+    .float-call{display:inline-flex}
     .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:rgba(251,251,253,.98);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line);max-height:0;overflow:hidden;transition:max-height .3s ease}
     .nav-links a{display:block;padding:16px 24px;font-size:16px;color:var(--ink);border-top:1px solid var(--line)}
     .nav-toggle:checked ~ .nav-links{max-height:280px}
@@ -290,6 +303,8 @@
       <li><a href="#faq">Вопросы</a></li>
       <li><a href="#contact">Контакты</a></li>
     </ul>
+    <!-- TODO: заменить телефон на реальный -->
+    <a class="nav-phone" href="tel:+79001234567">+7 (900) 123-45-67</a>
     <label for="nav-toggle" class="burger" aria-label="Открыть меню">
       <span></span><span></span><span></span>
     </label>
@@ -301,9 +316,10 @@
   <h1>Сметы для строительства, ремонта и реставрации</h1>
   <p class="lead">Опытный сметчик с профильным образованием и действующей профессиональной аттестацией.</p>
   <div class="cta-row">
-    <a class="btn btn-primary" href="#contact">Оставить заявку</a>
+    <a class="btn btn-primary" href="#contact">Обсудить объект</a>
     <a class="btn-link" href="#services">Услуги и цены</a>
   </div>
+  <p class="hero-note">Первая консультация — бесплатно</p>
 </header>
 
 <section id="services">
@@ -441,6 +457,12 @@
     </div>
   </div>
 </section>
+
+<!-- TODO: заменить телефон на реальный -->
+<a class="float-call" href="tel:+79001234567" aria-label="Позвонить">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+  Позвонить
+</a>
 
 <footer>
   <p>© 2026 · Сметная документация · Петрозаводск, Карелия</p>
