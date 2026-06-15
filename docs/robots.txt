@@ -1,0 +1,58 @@
+# robots.txt — expertsmeta.pro
+
+# --- Поисковые системы ---
+User-agent: Yandex
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# --- ИИ-ассистенты и их поисковые краулеры (разрешаем: хотим попадать в ответы ИИ) ---
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+
+# Google AI (Gemini, AI Overviews)
+User-agent: Google-Extended
+Allow: /
+
+# Яндекс Нейро / YandexGPT
+User-agent: YandexAdditional
+Allow: /
+
+# Apple, Common Crawl, Meta
+User-agent: Applebot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: meta-externalagent
+Allow: /
+
+# --- Все остальные ---
+User-agent: *
+Allow: /
+
+Sitemap: https://expertsmeta.pro/sitemap.xml
