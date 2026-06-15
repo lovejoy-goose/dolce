@@ -243,5 +243,13 @@
   <p class="legal">ИП Лаврова И.В. · ИНН 100119683117 · ОГРНИП 318100100020604</p>
 </footer>
 
+<script>
+  // Закрываем мобильное меню после выбора пункта
+  var navToggle = document.getElementById('nav-toggle');
+  document.querySelectorAll('.nav-links a').forEach(function (link) {
+    link.addEventListener('click', function () { navToggle.checked = false; });
+  });
+</script>
+
 </body>
 </html>
