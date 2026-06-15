@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Сметчик — Петрозаводск, Карелия</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f6f2;
+      --white: #ffffff;
+      --dark: #1c1c1c;
+      --muted: #6b6b6b;
+      --accent: #2d6a4f;
+      --accent-light: #52b788;
+      --border: #e0ddd5;
+      --section-gap: 90px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(247, 246, 242, 0.95);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 0 40px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: normal;
+      letter-spacing: 0.04em;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 40px 80px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-inner { width: 100%; }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      padding: 5px 12px;
+      border: 1px solid var(--accent-light);
+      border-radius: 2px;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 6vw, 68px);
+      font-weight: normal;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      color: var(--dark);
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 44px;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 30px;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+    }
+
+    .btn-primary:hover { background: #235a41; }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* SECTIONS */
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: var(--section-gap) 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 36px;
+    }
+
+    h2 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: normal;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    p { color: var(--muted); margin-bottom: 16px; }
+
+    /* STATS ROW */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 52px;
+    }
+
+    .stat {
+      background: var(--white);
+      padding: 28px 24px;
+      border-radius: 2px;
+    }
+
+    .stat-num {
+      font-size: 38px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* SERVICES */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      margin-top: 40px;
+    }
+
+    .service-card {
+      background: var(--white);
+      padding: 32px 28px;
+      border-radius: 2px;
+    }
+
+    .service-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .service-card h3 {
+      font-size: 17px;
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* WHY */
+    .why-list {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .why-item {
+      background: var(--white);
+      padding: 24px 28px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      border-radius: 2px;
+    }
+
+    .why-num {
+      font-size: 28px;
+      color: var(--border);
+      line-height: 1;
+      min-width: 36px;
+    }
+
+    .why-item h3 {
+      font-size: 16px;
+      font-weight: normal;
+      margin-bottom: 4px;
+    }
+
+    .why-item p {
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* PROCESS */
+    .process-steps {
+      margin-top: 40px;
+      counter-reset: steps;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .step {
+      background: var(--white);
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 16px;
+      align-items: center;
+      border-radius: 2px;
+    }
+
+    .step-num {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-align: center;
+      background: var(--bg);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step h3 { font-size: 15px; font-weight: normal; margin-bottom: 2px; }
+    .step p { font-size: 13px; margin: 0; }
+
+    /* CONTACT */
+    .contact-wrap {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .contact-info {
+      background: var(--white);
+      padding: 36px 32px;
+      border-radius: 2px 0 0 2px;
+    }
+
+    .contact-info h3 {
+      font-size: 20px;
+      font-weight: normal;
+      margin-bottom: 24px;
+    }
+
+    .contact-line {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    .contact-line span:first-child {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .contact-line a, .contact-line span:last-child {
+      font-size: 16px;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    .contact-line a:hover { color: var(--accent); }
+
+    .contact-note {
+      background: var(--accent);
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .contact-note p {
+      color: rgba(255,255,255,0.8);
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .contact-note .tagline {
+      font-size: 22px;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 24px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* MOBILE */
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 20px; }
+      .nav-links li:nth-child(n+3) { display: none; }
+
+      .hero { padding: 90px 20px 60px; }
+      section { padding: 60px 20px; }
+
+      .stats { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .contact-wrap { grid-template-columns: 1fr; }
+      .contact-note { border-radius: 0 0 2px 2px; }
+      .contact-info { border-radius: 2px 2px 0 0; }
+
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Сметчик · Петрозаводск</a>
+  <ul class="nav-links">
+    <li><a href="#about">Обо мне</a></li>
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#process">Как работаю</a></li>
+    <li><a href="#contact">Контакты</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Профессиональная сметная документация</div>
+    <h1>Сметы под ключ —<br/>точно и <em>в срок</em></h1>
+    <p class="hero-sub">
+      Составляю сметную документацию для строительства, капитального и текущего ремонта.
+      Работаю с частными заказчиками, подрядчиками и организациями по всей Карелии.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#contact">Оставить заявку</a>
+      <a class="btn btn-outline" href="#services">Узнать об услугах</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Обо мне</div>
+  <h2>Опытный сметчик с профильным образованием</h2>
+  <p>
+    Более 10 лет составляю сметы для объектов жилого и нежилого строительства,
+    ремонта квартир, инженерных сетей и благоустройства территорий.
+    Работаю в программах <strong>Гранд-Смета</strong> и <strong>РИК</strong>,
+    применяю федеральные и территориальные нормативные базы.
+  </p>
+  <p>
+    Имею опыт прохождения государственной экспертизы и работы с бюджетными объектами.
+    Соблюдаю требования ФЕР, ТЕР, ГЭСН и других актуальных сборников.
+  </p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">10+</div>
+      <p class="stat-desc">лет практики в сметном деле</p>
+    </div>
+    <div class="stat">
+      <div class="stat-num">300+</div>
+      <p class="stat-desc">завершённых объектов</p>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <p class="stat-desc">прохождение экспертизы</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">Услуги</div>
+  <h2>Что я делаю</h2>
+  <p>Полный перечень работ по сметному сопровождению объекта — от первичного расчёта до проверки смет подрядчика.</p>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">📐</div>
+      <h3>Составление смет</h3>
+      <p>Локальные и объектные сметы на строительство, ремонт, реконструкцию. Любой вид работ и объект.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔍</div>
+      <h3>Проверка смет</h3>
+      <p>Анализ смет подрядчика на предмет завышения расценок, дублирования работ, ошибок в объёмах.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏗️</div>
+      <h3>Сметы для тендера</h3>
+      <p>Подготовка сметной документации для участия в государственных и коммерческих закупках.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📋</div>
+      <h3>Дефектные ведомости</h3>
+      <p>Составление дефектных актов и ведомостей для обоснования объёмов ремонтных работ.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔄</div>
+      <h3>Корректировка смет</h3>
+      <p>Актуализация смет при изменении объёмов, расценок или нормативной базы. Перевод в текущий уровень цен.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📊</div>
+      <h3>Инженерные сети</h3>
+      <p>Сметы на электрику, сантехнику, отопление, вентиляцию и другие инженерные системы.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-label">Как я работаю</div>
+  <h2>Простой и прозрачный процесс</h2>
+  <p>Никаких лишних шагов — от заявки до готовой сметы быстро и понятно.</p>
+
+  <div class="process-steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div>
+        <h3>Заявка и обсуждение</h3>
+        <p>Вы описываете объект и задачу — по телефону, WhatsApp или email. Уточняем детали и сроки.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div>
+        <h3>Передача материалов</h3>
+        <p>Присылаете проект, чертежи, ведомость объёмов работ или фотографии объекта — что есть.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div>
+        <h3>Расчёт стоимости</h3>
+        <p>Определяем стоимость моих услуг, согласовываем формат сметы и нормативную базу.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div>
+        <h3>Составление сметы</h3>
+        <p>Работаю в Гранд-Смета. Срок — от 1 рабочего дня в зависимости от объёма и сложности.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">05</div>
+      <div>
+        <h3>Передача и правки</h3>
+        <p>Отправляю смету в удобном формате (xlsx, pdf, gge). При необходимости вношу корректировки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Контакты</div>
+  <h2>Обсудим ваш объект</h2>
+  <p>Напишите или позвоните — отвечу в течение нескольких часов.</p>
+
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h3>Связаться со мной</h3>
+
+      <div class="contact-line">
+        <span>Телефон / WhatsApp</span>
+        <a href="tel:+79001234567">+7 (900) 123-45-67</a>
+      </div>
+
+      <div class="contact-line">
+        <span>Email</span>
+        <a href="mailto:smeta@example.ru">smeta@example.ru</a>
+      </div>
+
+      <div class="contact-line">
+        <span>Telegram</span>
+        <a href="https://t.me/smetchik_ptz">@smetchik_ptz</a>
+      </div>
+
+      <div class="contact-line">
+        <span>Местоположение</span>
+        <span>Петрозаводск, Карелия</span>
+      </div>
+
+      <div class="contact-line">
+        <span>Режим работы</span>
+        <span>Пн–Пт, 9:00–18:00</span>
+      </div>
+    </div>
+
+    <div class="contact-note">
+      <p class="tagline">Первая консультация — бесплатно</p>
+      <p>
+        Расскажите об объекте, и я сразу скажу, что потребуется для сметы
+        и в какой срок смогу её выполнить.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 · Сметная документация · Петрозаводск</p>
+  <p>Работаю по всей Карелии и удалённо</p>
+</footer>
+
+</body>
+</html>

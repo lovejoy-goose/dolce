@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Сметчик — Петрозаводск, Карелия</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --paper:#eef1ec;--ink:#16344c;--ink-soft:#4a6276;--line:#c3cdc8;
+    --rule:rgba(22,52,76,.22);--accent:#b8552e;
+  }
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+  body{
+    font-family:"IBM Plex Sans",system-ui,sans-serif;color:var(--ink);
+    background:var(--paper);line-height:1.55;
+    background-image:linear-gradient(var(--rule) .6px,transparent .6px),linear-gradient(90deg,var(--rule) .6px,transparent .6px);
+    background-size:26px 26px;background-position:-1px -1px;
+  }
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .frame{max-width:1120px;margin:0 auto;border-left:1px solid var(--ink);border-right:1px solid var(--ink);background:rgba(238,241,236,.55)}
+  .pad{padding:0 clamp(20px,4vw,52px)}
+
+  /* TOP STRIP */
+  .topbar{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ink);height:48px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+  .topbar .nav a{color:var(--ink-soft);text-decoration:none;margin-left:22px;transition:color .15s}
+  .topbar .nav a:hover{color:var(--accent)}
+
+  /* HERO */
+  .hero{display:grid;grid-template-columns:1.55fr 1fr;border-bottom:1px solid var(--ink)}
+  .hero-l{padding:64px clamp(20px,4vw,52px) 56px;border-right:1px solid var(--ink)}
+  .kw{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:26px}
+  h1{font-size:clamp(38px,5.4vw,62px);font-weight:600;line-height:1.04;letter-spacing:-.02em;margin-bottom:26px}
+  .hero-l p{font-size:18px;color:var(--ink-soft);max-width:42ch;margin-bottom:34px}
+  .acts a{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+  .a-primary{display:inline-block;background:var(--ink);color:var(--paper);padding:14px 26px;margin-right:14px}
+  .a-primary:hover{background:var(--accent)}
+  .a-ghost{color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:3px}
+  .a-ghost:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* TITLEBLOCK (cartouche) */
+  .tb{display:flex;flex-direction:column;font-family:"IBM Plex Mono",monospace}
+  .tb-row{border-bottom:1px solid var(--ink);padding:18px clamp(18px,2.4vw,26px)}
+  .tb-row:last-child{border-bottom:none;flex-grow:1;display:flex;flex-direction:column;justify-content:flex-end}
+  .tb-k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+  .tb-v{font-size:15px;margin-top:6px;line-height:1.4}
+
+  /* RULER STATS */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--ink)}
+  .stat{padding:30px clamp(20px,4vw,52px);border-right:1px solid var(--ink)}
+  .stat:last-child{border-right:none}
+  .stat .n{font-family:"IBM Plex Mono",monospace;font-size:46px;font-weight:500;line-height:1;letter-spacing:-.02em}
+  .stat .l{font-size:13px;color:var(--ink-soft);margin-top:10px}
+
+  /* MINI STATS (внутри Обо мне) */
+  .mini-stats{display:flex;flex-wrap:wrap;gap:28px;padding:18px clamp(20px,4vw,52px) 0;font-family:"IBM Plex Mono",monospace}
+  .ms{display:flex;align-items:baseline;gap:8px}
+  .msn{font-size:21px;font-weight:600;letter-spacing:-.01em}
+  .msl{font-size:12px;color:var(--ink-soft)}
+  sup{color:var(--accent);font-weight:600}
+
+  /* SECTION */
+  .sec{border-bottom:1px solid var(--ink)}
+  .sec-h{display:flex;align-items:baseline;gap:18px;padding:40px clamp(20px,4vw,52px) 0}
+  .sec-h .idx{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;color:var(--accent)}
+  .sec-h h2{font-size:clamp(24px,3.4vw,34px);font-weight:600;letter-spacing:-.01em}
+  .sec-sub{padding:14px clamp(20px,4vw,52px) 0;color:var(--ink-soft);max-width:64ch;font-size:17px}
+
+  /* ABOUT */
+  .about{display:grid;grid-template-columns:1.4fr 1fr;gap:0;margin-top:36px}
+  .about-txt{padding:0 clamp(20px,4vw,52px) 48px;border-right:1px solid var(--ink)}
+  .about-txt p{font-size:17px;margin-bottom:16px;max-width:52ch}
+  .spec{padding:0 0 48px}
+  .spec-i{padding:18px clamp(20px,4vw,52px);border-bottom:1px solid var(--rule)}
+  .spec-i:last-child{border-bottom:none}
+  .spec-k{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+  .spec-v{font-size:15px;line-height:1.45}
+
+  /* SCHEDULE (ведомость услуг) */
+  .sch{margin-top:36px;border-top:1px solid var(--ink)}
+  .sch-cat{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);padding:18px clamp(20px,4vw,52px) 6px;background:rgba(22,52,76,.04)}
+  .sch-row{display:grid;grid-template-columns:46px 1fr auto;align-items:baseline;gap:18px;padding:13px clamp(20px,4vw,52px);border-bottom:1px solid var(--rule)}
+  .sch-row .ix{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft)}
+  .sch-row .nm{font-size:16px}
+  .sch-row .pr{font-family:"IBM Plex Mono",monospace;font-size:14px;white-space:nowrap;text-align:right}
+  .note{padding:20px clamp(20px,4vw,52px);font-size:12.5px;color:var(--ink-soft);font-family:"IBM Plex Mono",monospace;line-height:1.6;border-top:1px solid var(--rule)}
+
+  /* PROCESS */
+  .proc{margin-top:20px;padding-bottom:24px}
+  .pstep{display:grid;grid-template-columns:64px 1fr;gap:22px;padding:22px clamp(20px,4vw,52px);border-bottom:1px solid var(--rule);align-items:start}
+  .pstep:last-child{border-bottom:none}
+  .pstep .pn{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--accent);border:1px solid var(--ink);width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+  .pstep h3{font-size:18px;font-weight:600;margin-bottom:4px}
+  .pstep p{font-size:15px;color:var(--ink-soft);max-width:60ch}
+
+  /* CONTACT */
+  .contact{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--ink)}
+  .ct-l{padding:48px clamp(20px,4vw,52px);border-right:1px solid var(--ink)}
+  .ct-l .free{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+  .ct-l h2{font-size:clamp(24px,3.4vw,34px);font-weight:600;margin-bottom:16px;letter-spacing:-.01em}
+  .ct-l p{color:var(--ink-soft);font-size:16px;max-width:46ch}
+  .ct-r{display:flex;flex-direction:column}
+  .ct-i{padding:20px clamp(20px,4vw,52px);border-bottom:1px solid var(--rule);font-family:"IBM Plex Mono",monospace}
+  .ct-i:last-child{border-bottom:none}
+  .ct-k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+  .ct-i a,.ct-v{font-size:16px;color:var(--ink);text-decoration:none}
+  .ct-i a:hover{color:var(--accent)}
+
+  footer{height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,4vw,52px);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-soft)}
+
+  @media(max-width:820px){
+    .hero{grid-template-columns:1fr}
+    .hero-l{border-right:none;border-bottom:1px solid var(--ink)}
+    .stats{grid-template-columns:1fr}
+    .stat{border-right:none;border-bottom:1px solid var(--rule)}
+    .about{grid-template-columns:1fr}
+    .about-txt{border-right:none;border-bottom:1px solid var(--ink)}
+    .contact{grid-template-columns:1fr}
+    .ct-l{border-right:none;border-bottom:1px solid var(--ink)}
+    .topbar .nav a:nth-child(n+3){display:none}
+    .sch-row{grid-template-columns:32px 1fr;}
+    .sch-row .pr{grid-column:2;text-align:left;color:var(--accent)}
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <div class="topbar pad">
+    <span>Сметчик · Петрозаводск, Карелия</span>
+    <span class="nav">
+      <a href="#about">Обо мне</a><a href="#services">Услуги</a><a href="#process">Процесс</a><a href="#contact">Контакты</a>
+    </span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-l">
+      <div class="kw">Сметная документация</div>
+      <h1>Сметы для строительства, ремонта и реставрации</h1>
+      <p>Опытный сметчик с профильным образованием и действующей профессиональной аттестацией.</p>
+      <div class="acts">
+        <a class="a-primary" href="#contact">Оставить заявку</a>
+        <a class="a-ghost" href="#services">Услуги и цены</a>
+      </div>
+    </div>
+    <div class="tb">
+      <div class="tb-row"><div class="tb-k">Специалист</div><div class="tb-v">Аттестованный сметчик,<br/>инженер ПГС</div></div>
+      <div class="tb-row"><div class="tb-k">Программа · базы</div><div class="tb-v">А0 · ФСНБ-2022 · ССН-84</div></div>
+      <div class="tb-row"><div class="tb-k">Регион</div><div class="tb-v">Петрозаводск, Карелия</div></div>
+      <div class="tb-row"><div class="tb-k">В профессии с</div><div class="tb-v">сентября 2007 года</div></div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="sec" id="services">
+    <div class="sec-h"><span class="idx">01</span><h2>Что я делаю</h2></div>
+    <div class="sec-sub">Полный перечень работ по сметному сопровождению объекта — от первичного расчёта до проверки смет подрядчика.</div>
+    <div class="sch">
+      <div class="sch-cat">— Составление смет</div>
+      <div class="sch-row"><span class="ix">01</span><span class="nm">Сметы на СМР, ПНР и прочие работы по объектам ПГС</span><span class="pr">от 4 000 ₽</span></div>
+      <div class="sch-row"><span class="ix">02</span><span class="nm">Реставрационные работы (ССН-84) и приспособление ОКН</span><span class="pr">от 8 000 ₽</span></div>
+      <div class="sch-row"><span class="ix">03</span><span class="nm">Сметы на проектно-изыскательские работы (ПИР)</span><span class="pr">от 10 000 ₽</span></div>
+      <div class="sch-row"><span class="ix">04</span><span class="nm">Инвестиционные сметы по НЦС</span><span class="pr">от 10 000 ₽</span></div>
+      <div class="sch-row"><span class="ix">05</span><span class="nm">Составление КАЦ</span><span class="pr">от 150 ₽ / поз.</span></div>
+      <div class="sch-row"><span class="ix">06</span><span class="nm">Составление ССРСС</span><span class="pr">договорная</span></div>
+
+      <div class="sch-cat">— Контракты и закупки</div>
+      <div class="sch-row"><span class="ix">07</span><span class="nm">Составление НМЦК</span><span class="pr">от 8 000 ₽</span></div>
+      <div class="sch-row"><span class="ix">08</span><span class="nm">Смета контракта</span><span class="pr">от 5 000 ₽</span></div>
+      <div class="sch-row"><span class="ix">09</span><span class="nm">Акты КС-2 и справки КС-3</span><span class="pr">от 700 ₽ / акт</span></div>
+      <div class="sch-row"><span class="ix">10</span><span class="nm">Проверка смет подрядчиков <sup>*</sup></span><span class="pr">от 5 000 ₽</span></div>
+
+      <div class="sch-cat">— Сопровождение и экспертиза</div>
+      <div class="sch-row"><span class="ix">11</span><span class="nm">Раздел 12 «Сметная документация»</span><span class="pr">от 15 000 ₽</span></div>
+      <div class="sch-row"><span class="ix">12</span><span class="nm">Сопровождение в Госэкспертизе, РосГосЭкспертизе, РЦЦС</span><span class="pr">от 15 000 ₽</span></div>
+      <div class="sch-row"><span class="ix">13</span><span class="nm">Участие в судебной оценочной экспертизе</span><span class="pr">от 12 000 ₽</span></div>
+
+      <p class="note">* Проверка смет подрядчиков не является проверкой достоверности определения сметной стоимости и не является государственной или негосударственной экспертизой.</p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="sec" id="about">
+    <div class="sec-h"><span class="idx">02</span><h2>Опытный сметчик с профильным образованием</h2></div>
+    <div class="mini-stats">
+      <div class="ms"><span class="msn">19+</span><span class="msl">лет практики</span></div>
+      <div class="ms"><span class="msn">300+</span><span class="msl">завершённых объектов</span></div>
+      <div class="ms"><span class="msn">100%</span><span class="msl">прохождение экспертизы</span></div>
+    </div>
+    <div class="about">
+      <div class="about-txt">
+        <p>Более 19 лет составляю сметы на строительство, реконструкцию, капитальный и текущий ремонт объектов промышленного и гражданского строительства, реставрацию и приспособление ОКН.</p>
+        <p>Работаю в программе А0 с актуальными версиями федеральных нормативных баз (ФСНБ-2022, ССН-84). Имею опыт прохождения государственной экспертизы и работы с бюджетными объектами.</p>
+      </div>
+      <div class="spec">
+        <div class="spec-i"><div class="spec-k">Образование</div><div class="spec-v">Инженер по специальности «Промышленное и гражданское строительство».</div></div>
+        <div class="spec-i"><div class="spec-k">Аттестация</div><div class="spec-v">Действующая профессиональная аттестация «Сметное нормирование и ценообразование в строительстве».</div></div>
+        <div class="spec-i"><div class="spec-k">Именная печать</div><div class="spec-v">Наличие именной печати сметчика.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="sec" id="process">
+    <div class="sec-h"><span class="idx">03</span><h2>Простой и прозрачный процесс</h2></div>
+    <div class="sec-sub">Никаких лишних шагов — от заявки до готовой сметы быстро и понятно.</div>
+    <div class="proc">
+      <div class="pstep"><div class="pn">01</div><div><h3>Заявка и обсуждение</h3><p>Вы описываете объект и задачу — по телефону, WhatsApp или email. Уточняем детали и сроки.</p></div></div>
+      <div class="pstep"><div class="pn">02</div><div><h3>Передача материалов</h3><p>Присылаете проект, чертежи, ведомость объёмов работ или фотографии объекта — что есть.</p></div></div>
+      <div class="pstep"><div class="pn">03</div><div><h3>Расчёт стоимости</h3><p>Определяем стоимость моих услуг, согласовываем формат сметы и нормативную базу.</p></div></div>
+      <div class="pstep"><div class="pn">04</div><div><h3>Составление сметы</h3><p>Работаю в А0. Срок — от 1 рабочего дня в зависимости от объёма и сложности.</p></div></div>
+      <div class="pstep"><div class="pn">05</div><div><h3>Передача и правки</h3><p>Отправляю смету в удобном формате (xlsx, pdf, gge, ls). При необходимости вношу корректировки.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div class="contact" id="contact">
+    <div class="ct-l">
+      <div class="free">Первая консультация — бесплатно</div>
+      <h2>Обсудим ваш объект</h2>
+      <p>Напишите или позвоните — отвечу в течение нескольких часов. Расскажите об объекте, и я сразу скажу, что потребуется для сметы и в какой срок смогу её выполнить.</p>
+    </div>
+    <div class="ct-r">
+      <div class="ct-i"><div class="ct-k">Телефон / WhatsApp</div><a href="tel:+79001234567">+7 (900) 123-45-67</a></div>
+      <div class="ct-i"><div class="ct-k">Telegram</div><a href="https://t.me/smetchik_ptz">@smetchik_ptz</a></div>
+      <div class="ct-i"><div class="ct-k">Email</div><a href="mailto:smeta@example.ru">smeta@example.ru</a></div>
+      <div class="ct-i"><div class="ct-k">Режим работы</div><span class="ct-v">Пн–Пт, 9:00–18:00</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>© 2026 · Сметная документация</span>
+    <span>Петрозаводск, Карелия</span>
+  </footer>
+
+</div>
+</body>
+</html>

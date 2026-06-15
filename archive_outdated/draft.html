@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Сметчик — Петрозаводск, Карелия</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f6f2;
+      --white: #ffffff;
+      --dark: #1c1c1c;
+      --muted: #6b6b6b;
+      --accent: #2d6a4f;
+      --accent-light: #52b788;
+      --border: #e0ddd5;
+      --card-dark: #1f2a37;
+      --card-dark-2: #243140;
+      --section-gap: 90px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(247, 246, 242, 0.95);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 0 40px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: normal;
+      letter-spacing: 0.04em;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 40px 80px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-inner { width: 100%; }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      padding: 5px 12px;
+      border: 1px solid var(--accent-light);
+      border-radius: 2px;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 6vw, 68px);
+      font-weight: normal;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      color: var(--dark);
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 44px;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 30px;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+    }
+
+    .btn-primary:hover { background: #235a41; }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* SECTIONS */
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: var(--section-gap) 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 36px;
+    }
+
+    h2 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: normal;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    p { color: var(--muted); margin-bottom: 16px; }
+
+    /* STATS ROW */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 52px;
+    }
+
+    .stat {
+      background: var(--white);
+      padding: 28px 24px;
+      border-radius: 2px;
+    }
+
+    .stat-num {
+      font-size: 38px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* CREDENTIALS */
+    .creds {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+
+    .cred {
+      background: var(--white);
+      padding: 22px 24px;
+      border-radius: 2px;
+    }
+
+    .cred h3 {
+      font-size: 14px;
+      font-weight: normal;
+      color: var(--accent);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .cred p { font-size: 14px; margin: 0; }
+
+    /* SERVICES — dark pricing cards */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 44px;
+    }
+
+    .price-card {
+      background: var(--card-dark);
+      color: #e6ebf1;
+      border-radius: 8px;
+      padding: 32px 26px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price-card h3 {
+      font-size: 19px;
+      font-weight: normal;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .price-card .pc-desc {
+      font-size: 13px;
+      color: #9fb0c3;
+      margin-bottom: 22px;
+      line-height: 1.55;
+    }
+
+    .pc-list {
+      list-style: none;
+      margin: 0 0 24px;
+      flex-grow: 1;
+    }
+
+    .pc-list li {
+      font-size: 13.5px;
+      color: #cfd9e4;
+      padding: 9px 0 9px 26px;
+      position: relative;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      line-height: 1.5;
+    }
+
+    .pc-list li:first-child { border-top: none; }
+
+    .pc-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 9px;
+      color: var(--accent-light);
+      font-size: 13px;
+    }
+
+    .pc-list li .pc-price {
+      display: block;
+      font-size: 12px;
+      color: #7d8ea1;
+      margin-top: 2px;
+    }
+
+    .pc-from {
+      font-size: 12px;
+      color: #9fb0c3;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .pc-amount {
+      font-size: 30px;
+      color: #fff;
+      line-height: 1;
+      margin: 4px 0 20px;
+    }
+
+    .pc-btn {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 4px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.03em;
+      transition: background 0.2s;
+    }
+
+    .pc-btn:hover { background: var(--accent-light); }
+
+    .services-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 22px;
+      line-height: 1.6;
+    }
+
+    /* PROCESS */
+    .process-steps {
+      margin-top: 40px;
+      counter-reset: steps;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .step {
+      background: var(--white);
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 16px;
+      align-items: center;
+      border-radius: 2px;
+    }
+
+    .step-num {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-align: center;
+      background: var(--bg);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step h3 { font-size: 15px; font-weight: normal; margin-bottom: 2px; }
+    .step p { font-size: 13px; margin: 0; }
+
+    /* CONTACT */
+    .contact-wrap {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .contact-info {
+      background: var(--white);
+      padding: 36px 32px;
+      border-radius: 2px 0 0 2px;
+    }
+
+    .contact-info h3 {
+      font-size: 20px;
+      font-weight: normal;
+      margin-bottom: 24px;
+    }
+
+    .contact-line {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    .contact-line span:first-child {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .contact-line a, .contact-line span:last-child {
+      font-size: 16px;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    .contact-line a:hover { color: var(--accent); }
+
+    .contact-note {
+      background: var(--accent);
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .contact-note p {
+      color: rgba(255,255,255,0.8);
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .contact-note .tagline {
+      font-size: 22px;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 24px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* MOBILE */
+    @media (max-width: 860px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 20px; }
+      .nav-links li:nth-child(n+3) { display: none; }
+
+      .hero { padding: 90px 20px 60px; }
+      section { padding: 60px 20px; }
+
+      .stats { grid-template-columns: 1fr; }
+      .creds { grid-template-columns: 1fr; }
+      .contact-wrap { grid-template-columns: 1fr; }
+      .contact-note { border-radius: 0 0 2px 2px; }
+      .contact-info { border-radius: 2px 2px 0 0; }
+
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Сметчик · Петрозаводск</a>
+  <ul class="nav-links">
+    <li><a href="#about">Обо мне</a></li>
+    <li><a href="#services">Услуги и цены</a></li>
+    <li><a href="#process">Как работаю</a></li>
+    <li><a href="#contact">Контакты</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Профессиональная сметная документация</div>
+    <h1>Сметы под ключ —<br/>точно и <em>в срок</em></h1>
+    <p class="hero-sub">
+      Составляю сметную документацию для строительства, реконструкции, капитального
+      и текущего ремонта, а также для реставрации и приспособления объектов
+      культурного наследия. Работаю с заказчиками, подрядчиками и организациями
+      по всей Карелии.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#contact">Оставить заявку</a>
+      <a class="btn btn-outline" href="#services">Услуги и цены</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Обо мне</div>
+  <h2>Опытный сметчик с профильным образованием</h2>
+  <p>
+    Более 19 лет составляю сметы на строительство, реконструкцию, капитальный и текущий
+    ремонт объектов промышленного и гражданского строительства, реставрацию и приспособление
+    ОКН. Работаю в программе <strong>А0</strong> с актуальными версиями федеральных
+    нормативных баз (<strong>ФСНБ-2022</strong>, <strong>ССН-84</strong>).
+  </p>
+  <p>
+    Имею опыт прохождения государственной экспертизы и работы с бюджетными объектами.
+  </p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">19+</div>
+      <p class="stat-desc">лет практики в сметном деле</p>
+    </div>
+    <div class="stat">
+      <div class="stat-num">300+</div>
+      <p class="stat-desc">завершённых объектов</p>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <p class="stat-desc">прохождение экспертизы</p>
+    </div>
+  </div>
+
+  <div class="creds">
+    <div class="cred">
+      <h3>Образование</h3>
+      <p>Инженер по специальности «Промышленное и гражданское строительство».</p>
+    </div>
+    <div class="cred">
+      <h3>Аттестация</h3>
+      <p>Действующая профессиональная аттестация по программе «Сметное нормирование и ценообразование в строительстве».</p>
+    </div>
+    <div class="cred">
+      <h3>Именная печать</h3>
+      <p>Наличие именной печати сметчика для заверения документации.</p>
+    </div>
+    <div class="cred">
+      <h3>Стаж</h3>
+      <p>В сметном деле с сентября 2007 года.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">Услуги и цены</div>
+  <h2>Что я делаю</h2>
+  <p>Полный перечень работ по сметному сопровождению объекта — от первичного расчёта до проверки смет подрядчика.</p>
+
+  <div class="pricing-grid">
+
+    <!-- Card 1 -->
+    <div class="price-card">
+      <h3>Составление сметной документации</h3>
+      <p class="pc-desc">Локальные и объектные сметы по объектам ПГС, реставрации и проектным работам.</p>
+      <ul class="pc-list">
+        <li>Сметы на строительно-монтажные, пусконаладочные и прочие работы по ПГС
+          <span class="pc-price">от 4 000 ₽ / смета</span></li>
+        <li>Сметы на реставрационные работы (ССН-84) и приспособление ОКН
+          <span class="pc-price">от 8 000 ₽ / смета</span></li>
+        <li>Сметы на проектно-изыскательские работы (ПИР)
+          <span class="pc-price">от 10 000 ₽ / смета</span></li>
+        <li>Инвестиционные сметы по НЦС
+          <span class="pc-price">от 10 000 ₽ / смета</span></li>
+        <li>Составление КАЦ
+          <span class="pc-price">от 150 ₽ / позиция</span></li>
+        <li>Составление ССРСС
+          <span class="pc-price">цена договорная</span></li>
+      </ul>
+      <div class="pc-from">от</div>
+      <div class="pc-amount">4 000 ₽</div>
+      <a class="pc-btn" href="#contact">Подробнее об услуге</a>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="price-card">
+      <h3>Контракты и закупки</h3>
+      <p class="pc-desc">Расчёты и документация для торгов, контрактов и приёмки выполненных работ.</p>
+      <ul class="pc-list">
+        <li>Составление НМЦК
+          <span class="pc-price">от 8 000 ₽ / расчёт</span></li>
+        <li>Составление сметы контракта
+          <span class="pc-price">от 5 000 ₽ / смета</span></li>
+        <li>Акты КС-2 и справки КС-3
+          <span class="pc-price">от 700 ₽ / акт</span></li>
+        <li>Проверка смет подрядчиков
+          <span class="pc-price">от 5 000 ₽ / смета</span></li>
+      </ul>
+      <div class="pc-from">от</div>
+      <div class="pc-amount">5 000 ₽</div>
+      <a class="pc-btn" href="#contact">Подробнее об услуге</a>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="price-card">
+      <h3>Сопровождение и экспертиза</h3>
+      <p class="pc-desc">Подготовка раздела сметной документации и сопровождение на экспертизе.</p>
+      <ul class="pc-list">
+        <li>Раздел 12 «Сметная документация»
+          <span class="pc-price">от 15 000 ₽</span></li>
+        <li>Сопровождение в Госэкспертизе, РосГосЭкспертизе, РЦЦС
+          <span class="pc-price">от 15 000 ₽ / смета</span></li>
+        <li>Участие в судебной оценочной экспертизе
+          <span class="pc-price">от 12 000 ₽ / смета</span></li>
+      </ul>
+      <div class="pc-from">от</div>
+      <div class="pc-amount">15 000 ₽</div>
+      <a class="pc-btn" href="#contact">Подробнее об услуге</a>
+    </div>
+
+  </div>
+
+  <p class="services-note">
+    Проверка смет подрядчиков не является проверкой достоверности определения сметной
+    стоимости и не является государственной или негосударственной экспертизой.
+  </p>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-label">Как я работаю</div>
+  <h2>Простой и прозрачный процесс</h2>
+  <p>Никаких лишних шагов — от заявки до готовой сметы быстро и понятно.</p>
+
+  <div class="process-steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div>
+        <h3>Заявка и обсуждение</h3>
+        <p>Вы описываете объект и задачу — по телефону, WhatsApp или email. Уточняем детали и сроки.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div>
+        <h3>Передача материалов</h3>
+        <p>Присылаете проект, чертежи, ведомость объёмов работ или фотографии объекта — что есть.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div>
+        <h3>Расчёт стоимости</h3>
+        <p>Определяем стоимость моих услуг, согласовываем формат сметы и нормативную базу.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div>
+        <h3>Составление сметы</h3>
+        <p>Работаю в программе А0. Срок — от 1 рабочего дня в зависимости от объёма и сложности.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">05</div>
+      <div>
+        <h3>Передача и правки</h3>
+        <p>Отправляю смету в удобном формате (xlsx, pdf, gge, ls). При необходимости вношу корректировки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Контакты</div>
+  <h2>Обсудим ваш объект</h2>
+  <p>Напишите или позвоните — отвечу в течение нескольких часов.</p>
+
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h3>Связаться со мной</h3>
+
+      <div class="contact-line">
+        <span>Телефон / WhatsApp</span>
+        <a href="tel:+79001234567">+7 (900) 123-45-67</a>
+      </div>
+
+      <div class="contact-line">
+        <span>Email</span>
+        <a href="mailto:smeta@example.ru">smeta@example.ru</a>
+      </div>
+
+      <div class="contact-line">
+        <span>Telegram</span>
+        <a href="https://t.me/smetchik_ptz">@smetchik_ptz</a>
+      </div>
+
+      <div class="contact-line">
+        <span>Местоположение</span>
+        <span>Петрозаводск, Карелия</span>
+      </div>
+
+      <div class="contact-line">
+        <span>Режим работы</span>
+        <span>Пн–Пт, 9:00–18:00</span>
+      </div>
+    </div>
+
+    <div class="contact-note">
+      <p class="tagline">Первая консультация — бесплатно</p>
+      <p>
+        Расскажите об объекте, и я сразу скажу, что потребуется для сметы
+        и в какой срок смогу её выполнить.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 · Сметная документация · Петрозаводск</p>
+  <p>Работаю по всей Карелии и удалённо</p>
+</footer>
+
+</body>
+</html>
