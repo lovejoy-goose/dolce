@@ -539,7 +539,14 @@
     function showBanner() { if (banner) banner.classList.add('show'); }
 
     function accept() { try { localStorage.setItem(KEY, 'granted'); } catch (e) {} hideBanner(); loadMetrika(); }
-    function deny() { try { localStorage.setItem(KEY, 'denied'); } catch (e) {} hideBanner(); }
+    function deny() {
+      try { localStorage.setItem(KEY, 'denied'); } catch (e) {}
+      hideBanner();
+      // Если Метрика уже была загружена (например, ранее нажали «Принять»),
+      // отзыв согласия должен реально остановить трекинг → перезагружаем
+      // страницу: при следующей загрузке флаг 'denied' не даст ей запуститься.
+      if (window.__ymLoaded) { location.reload(); }
+    }
 
     var choice = null;
     try { choice = localStorage.getItem(KEY); } catch (e) {}
