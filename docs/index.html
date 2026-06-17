@@ -258,12 +258,18 @@
   .cookie-banner.show{display:block}
   .cookie-text{font-size:13px;line-height:1.55;color:rgba(255,255,255,.82);margin-bottom:16px}
   .cookie-text a{color:#fff;text-underline-offset:2px}
+  .cookie-agree{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5;
+    color:rgba(255,255,255,.82);margin-bottom:18px;cursor:pointer}
+  .cookie-agree input{flex:0 0 auto;width:17px;height:17px;margin:1px 0 0;cursor:pointer;accent-color:#fff}
+  .cookie-agree a{color:#fff;text-underline-offset:2px}
   .cookie-actions{display:flex;gap:18px;align-items:center;justify-content:flex-end}
   .cookie-btn{font:inherit;cursor:pointer;transition:opacity .2s}
   .cookie-deny{background:transparent;border:0;padding:0;font-size:12px;color:rgba(255,255,255,.45);text-decoration:underline;text-underline-offset:2px}
   .cookie-deny:hover{color:rgba(255,255,255,.75)}
+  .cookie-deny[hidden]{display:none}
   .cookie-accept{font-size:14px;font-weight:500;padding:10px 22px;border-radius:980px;border:0;background:#fff;color:var(--ink)}
   .cookie-accept:hover{opacity:.85}
+  .cookie-accept:disabled{opacity:.4;cursor:not-allowed}
 
   /* FAQ */
   .faq-list{border-top:1px solid var(--line)}
@@ -491,12 +497,16 @@
 <!-- Cookie-баннер: согласие на аналитику (152-ФЗ) -->
 <div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Согласие на использование cookie">
   <p class="cookie-text">
-    Сайт использует cookie и сервис Яндекс.Метрика для аналитики. Подробнее — в
-    <a href="/privacy.html">Политике обработки персональных данных</a>.
+    Сайт использует cookie и сервис Яндекс.Метрика для аналитики.
   </p>
+  <label class="cookie-agree" for="cookie-agree">
+    <input type="checkbox" id="cookie-agree">
+    <span>Я соглашаюсь на сбор данных с помощью сервиса Яндекс.Метрика и принимаю
+      <a href="/privacy.html">политику конфиденциальности</a></span>
+  </label>
   <div class="cookie-actions">
-    <button type="button" class="cookie-btn cookie-deny" id="cookie-deny">Отклонить</button>
-    <button type="button" class="cookie-btn cookie-accept" id="cookie-accept">Принять</button>
+    <button type="button" class="cookie-btn cookie-deny" id="cookie-deny" hidden>Отклонить</button>
+    <button type="button" class="cookie-btn cookie-accept" id="cookie-accept" disabled>Принять</button>
   </div>
 </div>
 
@@ -534,10 +544,27 @@
       });
     }
 
-    function hideBanner() { if (banner) banner.classList.remove('show'); }
-    function showBanner() { if (banner) banner.classList.add('show'); }
+    var agree = document.getElementById('cookie-agree');
+    var dBtn = document.getElementById('cookie-deny');
+    var aBtn = document.getElementById('cookie-accept');
 
-    function accept() { try { localStorage.setItem(KEY, 'granted'); } catch (e) {} hideBanner(); loadMetrika(); }
+    function syncAccept() { if (aBtn) aBtn.disabled = !(agree && agree.checked); }
+
+    function hideBanner() { if (banner) banner.classList.remove('show'); }
+    // withDeny: показывать «Отклонить» (отзыв согласия из подвала), на первом визите — нет
+    function showBanner(withDeny) {
+      if (!banner) return;
+      if (agree) agree.checked = false;
+      syncAccept();
+      if (dBtn) dBtn.hidden = !withDeny;
+      banner.classList.add('show');
+    }
+
+    function accept() {
+      if (agree && !agree.checked) return; // без галочки не принимаем
+      try { localStorage.setItem(KEY, 'granted'); } catch (e) {}
+      hideBanner(); loadMetrika();
+    }
     function deny() {
       try { localStorage.setItem(KEY, 'denied'); } catch (e) {}
       hideBanner();
@@ -551,15 +578,14 @@
     try { choice = localStorage.getItem(KEY); } catch (e) {}
 
     if (choice === 'granted') { loadMetrika(); }
-    else if (choice !== 'denied') { showBanner(); }
+    else if (choice !== 'denied') { showBanner(false); }
 
-    var aBtn = document.getElementById('cookie-accept');
-    var dBtn = document.getElementById('cookie-deny');
+    if (agree) agree.addEventListener('change', syncAccept);
     if (aBtn) aBtn.addEventListener('click', accept);
     if (dBtn) dBtn.addEventListener('click', deny);
 
-    // Отзыв согласия — вызывается из подвала и из политики
-    window.resetCookieConsent = function () { try { localStorage.removeItem(KEY); } catch (e) {} showBanner(); };
+    // Отзыв согласия — вызывается из подвала и из политики (с кнопкой «Отклонить»)
+    window.resetCookieConsent = function () { try { localStorage.removeItem(KEY); } catch (e) {} showBanner(true); };
   })();
 </script>
 
